@@ -2105,3 +2105,35 @@ tr:hover {
 .fade-in {
     animation: fadeInUp 0.6s ease forwards;
 }
+
+
+    .image-container {
+    position: relative;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.historical-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    transition: var(--transition);
+}
+
+.historical-image:hover {
+    transform: scale(1.02);
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
