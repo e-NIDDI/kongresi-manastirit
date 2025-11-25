@@ -5,13 +5,32 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Kongresi i Manastirit - Faqja Kryesore</title>
         <link rel="stylesheet" href="style.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600;700&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
+        <!-- Animated Background Elements -->
+        <div class="floating-elements">
+            <div class="floating-letter">A</div>
+            <div class="floating-letter">B</div>
+            <div class="floating-letter">C</div>
+            <div class="floating-letter">Ç</div>
+            <div class="floating-letter">D</div>
+            <div class="floating-letter">E</div>
+            <div class="floating-letter">Ë</div>
+        </div>
+
+        <!-- Navigation -->
         <nav class="navbar">
             <div class="nav-container">
                 <div class="nav-logo">
-                    <h2>Kongresi i Manastirit</h2>
-                    <span>14-22 Nëntor 1908</span>
+                    <div class="logo-icon">🇦🇱</div>
+                    <div class="logo-text">
+                        <h2>Kongresi i Manastirit</h2>
+                        <span>14-22 Nëntor 1908</span>
+                    </div>
                 </div>
                 <ul class="nav-menu">
                     <li class="nav-item">
@@ -41,6 +60,9 @@
                         >
                     </li>
                 </ul>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="themeToggle">🌙</button>
+                </div>
                 <div class="hamburger">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -49,110 +71,315 @@
             </div>
         </nav>
 
+        <!-- Hero Section -->
         <header class="hero">
+            <div class="hero-background">
+                <div class="hero-pattern"></div>
+                <div class="hero-glow"></div>
+            </div>
             <div class="hero-content">
-                <h1 class="hero-title">Kongresi i Manastirit</h1>
+                <div class="hero-badge">1908</div>
+                <h1 class="hero-title">
+                    <span class="title-line">Kongresi i</span>
+                    <span class="title-line highlight">Manastirit</span>
+                </h1>
                 <p class="hero-subtitle">
-                    Vendi ku u formua alfabeti bashkëkohor shqip
+                    Lindja e Alfabetit Shqip - Një Revolucion Kulturor
                 </p>
-                <div class="hero-date">14-22 Nëntor 1908</div>
-                <a href="#intro" class="cta-button">Eksploro Historinë</a>
+                <div class="hero-date">
+                    <div class="date-item">
+                        <span class="date-number">14</span>
+                        <span class="date-label">Nëntor</span>
+                    </div>
+                    <div class="date-separator">—</div>
+                    <div class="date-item">
+                        <span class="date-number">22</span>
+                        <span class="date-label">Nëntor</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#intro" class="cta-button primary">
+                        <span>Eksploro Historinë</span>
+                        <div class="button-arrow">→</div>
+                    </a>
+                    <a href="alfabeti.html" class="cta-button secondary">
+                        <span>Shiko Alfabetin</span>
+                    </a>
+                </div>
             </div>
             <div class="hero-scroll">
-                <div class="scroll-indicator"></div>
+                <div class="scroll-indicator">
+                    <div class="scroll-text">Scroll</div>
+                    <div class="scroll-arrow"></div>
+                </div>
             </div>
         </header>
 
         <main>
+            <!-- Introduction Section -->
             <section id="intro" class="intro-section">
                 <div class="container">
                     <div class="section-header">
-                        <h2>Një Moment Historik për Kombësinë Shqiptare</h2>
+                        <div class="section-badge">Rëndësi Historike</div>
+                        <h2>Një Moment Shpirtëror për Kombësinë Shqiptare</h2>
                         <p>
-                            Kongresi i Manastirit përfaqëson një nga ngjarjet më
-                            të rëndësishme në historinë e kombit shqiptar
+                            Kongresi i Manastirit shënoi një nga ngjarjet më
+                            transformative në historinë e kombit shqiptar, duke
+                            hedhur themelet për identitetin kulturor tonë
                         </p>
                     </div>
 
                     <div class="features-grid">
                         <div class="feature-card">
-                            <div class="feature-icon">📜</div>
-                            <h3>Vendimi për Alfabetin</h3>
+                            <div class="feature-icon">
+                                <div class="icon-wrapper">
+                                    <span>📜</span>
+                                </div>
+                            </div>
+                            <h3>Vendimi Historik</h3>
                             <p>
-                                Përzgjedhja e alfabetit latin për gjuhën shqipe
+                                Përzgjedhja e alfabetit latin me 36 shkronja për
+                                gjuhën shqipe
                             </p>
+                            <div class="feature-stats">
+                                <div class="stat">
+                                    <span class="stat-number">36</span>
+                                    <span class="stat-label">Shkronja</span>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="feature-card">
-                            <div class="feature-icon">👥</div>
-                            <h3>50 Pjesëmarrës</h3>
+                            <div class="feature-icon">
+                                <div class="icon-wrapper">
+                                    <span>👥</span>
+                                </div>
+                            </div>
+                            <h3>Uniteti Kombëtar</h3>
                             <p>
-                                Delegatë nga të gjitha rajonet etnike shqiptare
+                                50 delegatë nga të gjitha rajonet etnike
+                                shqiptare të Ballkanit
                             </p>
+                            <div class="feature-stats">
+                                <div class="stat">
+                                    <span class="stat-number">50</span>
+                                    <span class="stat-label">Delegatë</span>
+                                </div>
+                            </div>
                         </div>
+
                         <div class="feature-card">
-                            <div class="feature-icon">🏛️</div>
-                            <h3>Manastir (Bitola)</h3>
-                            <p>Qyteti ku u zhvillua kongresi historik</p>
+                            <div class="feature-icon">
+                                <div class="icon-wrapper">
+                                    <span>🏛️</span>
+                                </div>
+                            </div>
+                            <h3>Vendndodhja Simbolike</h3>
+                            <p>
+                                Manastir (Bitola e sotme) - qendër e rëndësishme
+                                kulturore shqiptare
+                            </p>
+                            <div class="feature-stats">
+                                <div class="stat">
+                                    <span class="stat-number">9</span>
+                                    <span class="stat-label">Ditë</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- Timeline Preview -->
             <section class="timeline-preview">
                 <div class="container">
-                    <h2>Rruga drejt Kongresit</h2>
+                    <div class="section-header">
+                        <h2>Rruga drejt Pavarësisë Kulturore</h2>
+                        <p>
+                            Një udhëtim nëpër ngjarjet kryesore që çuan në këtë
+                            moment historik
+                        </p>
+                    </div>
+
                     <div class="timeline">
                         <div class="timeline-item">
-                            <div class="timeline-date">1879</div>
+                            <div class="timeline-marker">
+                                <div class="marker-dot"></div>
+                                <div class="marker-line"></div>
+                            </div>
                             <div class="timeline-content">
+                                <div class="timeline-date">1879</div>
                                 <h3>Shoqëria e Stambollit</h3>
                                 <p>
                                     Themelimi i shoqërisë për publikimin e
-                                    shkronjave shqipe
+                                    shkronjave shqipe, hapi i parë drejt
+                                    standardizimit
                                 </p>
                             </div>
                         </div>
+
                         <div class="timeline-item">
-                            <div class="timeline-date">1908</div>
+                            <div class="timeline-marker">
+                                <div class="marker-dot"></div>
+                                <div class="marker-line"></div>
+                            </div>
                             <div class="timeline-content">
+                                <div class="timeline-date">1905</div>
+                                <h3>Kongresi i Dibrës</h3>
+                                <p>
+                                    Përgatitja e terrenit për diskutimet më të
+                                    gjera për alfabetin e njësuar
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item highlight">
+                            <div class="timeline-marker">
+                                <div class="marker-dot"></div>
+                                <div class="marker-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">1908</div>
                                 <h3>Kongresi i Manastirit</h3>
-                                <p>Vendimi për alfabetin e bashkuar shqip</p>
+                                <p>
+                                    Vendimi historik për alfabetin e bashkuar
+                                    shqip, një sukses i madh kulturor
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <a href="historiku.html" class="more-link"
-                        >Shiko të gjithë historinë →</a
-                    >
+
+                    <div class="section-actions">
+                        <a href="historiku.html" class="cta-button outline">
+                            <span>Shiko të gjithë historinë</span>
+                            <div class="button-arrow">→</div>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Facts -->
+            <section class="facts-section">
+                <div class="container">
+                    <div class="facts-grid">
+                        <div class="fact-card">
+                            <div class="fact-number">83%</div>
+                            <div class="fact-text">
+                                e shqiptarëve sot përdorin alfabetin e vendosur
+                                në Manastir
+                            </div>
+                        </div>
+                        <div class="fact-card">
+                            <div class="fact-number">115</div>
+                            <div class="fact-text">
+                                vjet trashëgimi kulturore të pandërprerë
+                            </div>
+                        </div>
+                        <div class="fact-card">
+                            <div class="fact-number">4</div>
+                            <div class="fact-text">
+                                alfabete të ndryshme përdoreshin para kongresit
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CTA Section -->
+            <section class="cta-section">
+                <div class="container">
+                    <div class="cta-content">
+                        <h2>A je i gatshëm të eksplorosh historinë tonë?</h2>
+                        <p>
+                            Zbulo detajet e plota të Kongresit të Manastirit,
+                            personalitetet kryesore dhe ndikimin e tij në
+                            formimin e identitetit tonë kombëtar
+                        </p>
+                        <div class="cta-actions">
+                            <a
+                                href="rreth.html"
+                                class="cta-button primary large"
+                            >
+                                <span>Filloni Eksplorimin</span>
+                                <div class="button-arrow">→</div>
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
 
+        <!-- Footer -->
         <footer class="footer">
             <div class="container">
                 <div class="footer-content">
-                    <div class="footer-section">
-                        <h4>Kongresi i Manastirit</h4>
-                        <p>
-                            Një projekt për të kremtuar trashëgiminë kulturore
-                            shqiptare
+                    <div class="footer-main">
+                        <div class="footer-logo">
+                            <div class="logo-icon">🇦🇱</div>
+                            <div class="logo-text">
+                                <h3>Kongresi i Manastirit</h3>
+                                <p>Trashëgimia jonë kulturore</p>
+                            </div>
+                        </div>
+                        <p class="footer-description">
+                            Një projekt dedikuar për të kremtuar një nga
+                            ngjarjet më të rëndësishme në historinë e kombit
+                            shqiptar dhe për të ruajtur trashëgiminë tonë të
+                            pasur kulturore.
                         </p>
                     </div>
-                    <div class="footer-section">
-                        <h4>Shpejtësi</h4>
-                        <ul>
-                            <li><a href="index.html">Kryefaqja</a></li>
-                            <li><a href="alfabeti.html">Alfabeti</a></li>
-                            <li>
-                                <a href="pjesemarresit.html">Personalitetet</a>
-                            </li>
-                        </ul>
+
+                    <div class="footer-links">
+                        <div class="footer-column">
+                            <h4>Eksploro</h4>
+                            <ul>
+                                <li><a href="index.html">Kryefaqja</a></li>
+                                <li>
+                                    <a href="rreth.html">Rreth Kongresit</a>
+                                </li>
+                                <li><a href="historiku.html">Historiku</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Mëso</h4>
+                            <ul>
+                                <li>
+                                    <a href="pjesemarresit.html"
+                                        >Pjesëmarrësit</a
+                                    >
+                                </li>
+                                <li><a href="alfabeti.html">Alfabeti</a></li>
+                                <li>
+                                    <a href="trashigimi.html">Trashëgimia</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="footer-column">
+                            <h4>Kontakt</h4>
+                            <ul>
+                                <li><a href="#">Rreth Nesh</a></li>
+                                <li><a href="#">Privatësia</a></li>
+                                <li><a href="#">Kushtet</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
                 <div class="footer-bottom">
-                    <p>
-                        &copy; 2024 Kongresi i Manastirit. Të gjitha të drejtat
-                        e rezervuara.
-                    </p>
+                    <div class="footer-copyright">
+                        <p>
+                            &copy; 2024 Kongresi i Manastirit. Të gjitha të
+                            drejtat e rezervuara.
+                        </p>
+                    </div>
+                    <div class="footer-social">
+                        <span>Ndaj me shokët:</span>
+                        <div class="social-links">
+                            <a href="#" class="social-link">📱</a>
+                            <a href="#" class="social-link">💬</a>
+                            <a href="#" class="social-link">📧</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </footer>
