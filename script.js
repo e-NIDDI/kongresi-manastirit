@@ -1,4 +1,4 @@
-// Enhanced script.js with theme toggle, animations, and all interactive features - MOBILE FIXED
+// Enhanced script.js with theme toggle, animations, and all interactive features
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize all functionality
     initThemeToggle();
@@ -1147,11 +1147,11 @@ const additionalStyles = `
         .nav-menu {
             position: fixed;
             left: -100%;
-            top: 70px;
+            top: 80px;
             flex-direction: column;
             background: var(--white);
             width: 100%;
-            height: calc(100vh - 70px);
+            height: calc(100vh - 80px);
             text-align: center;
             transition: left 0.3s ease;
             box-shadow: var(--shadow-lg);
