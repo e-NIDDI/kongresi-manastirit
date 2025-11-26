@@ -1,10 +1,10 @@
-// script.js – ALFABETI SHQIP ME ZË TË VËRTETË SHQIPTAR + TË GJITHA FUNKSIONET
+// script.js – ALFABETI SHQIP ME ZË TË VËRTETË SHQIPTAR (2025 FINAL VERSION)
 document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
   initNavigation();
   initSmoothScrolling();
   initHeaderEffects();
-  initAlphabetGrid();           // MAGJIA SHQIPTARE
+  initAlphabetGrid();        // ZËRI I VËRTETË SHQIP KËTU
   initPeopleFilter();
   initNumberCounters();
   initScrollAnimations();
@@ -13,28 +13,56 @@ document.addEventListener("DOMContentLoaded", () => {
   injectStyles();
 });
 
-// ==================== ALFABETI SHQIP – ZËRI I VËRTETË SHQIPTAR ====================
+// ==================== ALFABETI SHQIP – ZË I INKIZUAR NGA SHQIPTARË TË VËRTETË ====================
 function initAlphabetGrid() {
   const grid = document.querySelector(".alphabet-grid");
   if (!grid) return;
 
-  const alfabeti = ["A","B","C","Ç","D","Dh","E","Ë","F","G","Gj","H","I","J","K","L","Ll","M","N","Nj","O","P","Q","R","Rr","S","Sh","T","Th","U","V","X","Xh","Y","Z","Zh"];
+  const alfabeti = [
+    "A","B","C","Ç","D","Dh","E","Ë","F","G","Gj","H","I","J","K","L","Ll",
+    "M","N","Nj","O","P","Q","R","Rr","S","Sh","T","Th","U","V","X","Xh","Y","Z","Zh"
+  ];
 
-  grid.innerHTML = alfabeti.map(l => `
-    <div class="letter-card" data-letter="${l}">
-      <span class="letter">${l}</span>
-      <div class="letter-tooltip">Shkronja ${l}</div>
+  grid.innerHTML = alfabeti.map(letter => `
+    <div class="letter-card" data-letter="${letter}">
+      <span class="letter">${letter}</span>
+      <div class="letter-tooltip">Shkronja ${letter === "Ë" ? "Ë" : letter}</div>
     </div>
   `).join("");
 
+  // Cache për audio që të mos ketë vonesë
+  const audioCache = {};
+
+  alfabeti.forEach(letter => {
+    const audio = new Audio(`audio/${letter}.mp3`);
+    audio.preload = "auto";
+    audioCache[letter] = audio;
+  });
+
   document.querySelectorAll(".letter-card").forEach(card => {
+    const letter = card.dataset.letter;
+
     card.addEventListener("click", () => {
-      card.classList.toggle("active");
-      folShqip(card.dataset.letter);
+      // Efekt vizual
+      card.classList.add("active");
+      setTimeout(() => card.classList.remove("active"), 600);
+
+      // Luaj zërin e saktë shqiptar
+      const audio = audioCache[letter];
+      if (audio) {
+        // Ndal çdo zë tjetër
+        Object.values(audioCache).forEach(a => {
+          a.pause();
+          a.currentTime = 0;
+        });
+        audio.play().catch(e => console.log("Audio play failed:", e));
+      }
     });
+
+    // Hover efekt
     card.addEventListener("mouseenter", () => {
-      card.style.transform = "translateY(-12px) scale(1.1)";
-      card.style.boxShadow = "0 15px 30px rgba(0,0,0,0.2)";
+      card.style.transform = "translateY(-15px) scale(1.15)";
+      card.style.boxShadow = "0 20px 40px rgba(0,0,0,0.3)";
     });
     card.addEventListener("mouseleave", () => {
       card.style.transform = "";
@@ -43,47 +71,19 @@ function initAlphabetGrid() {
   });
 }
 
-// ZËRI 100% SHQIP – SIÇ E THOTË ÇDO SHQIPTAR
-function folShqip(shkronja) {
-  if (!("speechSynthesis" in window)) return;
-
-  const tingulliShqip = {
-    A: "Aaaa",      B: "Bëëë",      C: "Tsëë",      Ç: "Çëëë",
-    D: "Dëë",       Dh: "Dhëëë",    E: "Eeee",      Ë: "Ëëëë",
-    F: "Ffff",      G: "Gëë",       Gj: "Gjëëë",    H: "Hëë",
-    I: "Iiii",      J: "Jot",       K: "Këë",       L: "Lëë",
-    Ll: "Ëlll",     M: "Mëë",       N: "Nëë",       Nj: "Njëëë",
-    O: "Oooo",      P: "Pëë",       Q: "Qëë",       R: "Rëë",
-    Rr: "Rrrrr",    S: "Ssss",      Sh: "Shhhh",    T: "Tëë",
-    Th: "Thhhh",    U: "Uuuu",      V: "Vëë",       X: "Xëë",
-    Xh: "Xhjëëë",   Y: "Yyyy",      Z: "Zëë",       Zh: "Zhhhh"
-  };
-
-  const tekst = tingulliShqip[shkronja] || shkronja;
-
-  const utterance = new SpeechSynthesisUtterance(tekst);
-  utterance.lang = "sq-AL";     // Detyron zërin shqiptar
-  utterance.rate = 0.8;
-  utterance.pitch = 1.1;
-  utterance.volume = 1;
-
-  speechSynthesis.cancel();     // Pastro radhën që të mos ketë vonesë
-  speechSynthesis.speak(utterance);
-}
-
-// ==================== FUNKSIONET E TJERA (të pastruara dhe funksionale) ====================
+// ==================== PJESËT E TJERA (të pastruara dhe funksionale) ====================
 function initThemeToggle() {
   const btn = document.getElementById("themeToggle");
   if (!btn) return;
   const theme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", theme);
-  btn.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
+  btn.innerHTML = theme === "light" ? "Dark Mode" : "Light Mode";
 
   btn.addEventListener("click", () => {
     const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
     document.documentElement.setAttribute("data-theme", newTheme);
     localStorage.setItem("theme", newTheme);
-    btn.textContent = newTheme === "light" ? "Dark Mode" : "Light Mode";
+    btn.innerHTML = newTheme === "light" ? "Dark Mode" : "Light Mode";
   });
 }
 
@@ -97,8 +97,8 @@ function initNavigation() {
     document.body.style.overflow = nav.classList.contains("active") ? "hidden" : "";
   });
 
-  document.querySelectorAll(".nav-link").forEach(link => {
-    link.addEventListener("click", () => {
+  document.querySelectorAll(".nav-link").forEach(l => {
+    l.addEventListener("click", () => {
       hamburger?.classList.remove("active");
       nav?.classList.remove("active");
       document.body.style.overflow = "";
@@ -112,14 +112,7 @@ function initSmoothScrolling() {
       const href = a.getAttribute("href");
       if (!href || href === "#") return;
       e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        const offset = document.querySelector(".navbar")?.offsetHeight || 0;
-        window.scrollTo({
-          top: target.offsetTop - offset - 20,
-          behavior: "smooth"
-        });
-      }
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     });
   });
 }
@@ -132,9 +125,9 @@ function initHeaderEffects() {
   window.addEventListener("scroll", () => {
     const y = window.scrollY;
     if (navbar) {
-      navbar.style.background = y > 80 ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.9)";
-      navbar.style.backdropFilter = "blur(12px)";
-      navbar.style.transform = (y > lastY && y > 150) ? "translateY(-100%)" : "translateY(0)";
+      navbar.style.background = y > 80 ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)";
+      navbar.style.backdropFilter = "blur(15px)";
+      navbar.style.transform = y > lastY && y > 150 ? "translateY(-100%)" : "translateY(0)";
     }
     if (progress) {
       const percent = (y / (document.body.scrollHeight - innerHeight)) * 100;
@@ -151,63 +144,54 @@ function initPeopleFilter() {
       btn.classList.add("active");
 
       const filter = btn.dataset.filter;
-      let visible = 0;
+      let count = 0;
 
       document.querySelectorAll(".person-card").forEach(card => {
-        const show = filter === "all" || card.dataset.category.split(" ").includes(filter);
+        const show = filter === "all" || card.dataset.category.includes(filter);
         card.style.display = show ? "block" : "none";
-        if (show) visible++;
+        if (show) count++;
       });
 
-      const counter = document.querySelector(".results-count");
-      if (counter) counter.textContent = `${visible} rezultate`;
+      document.querySelector(".results-count")?.replaceChildren(`${count} rezultate`);
     });
   });
 }
 
 function initNumberCounters() {
-  const counters = document.querySelectorAll(".stat-number, .fact-number");
-
-  counters.forEach(el => {
-    const num = parseInt(el.textContent.replace(/\D/g, "")) || 0;
-    const suffix = el.textContent.replace(/[0-9,]/g, "");
-    el.dataset.target = num;
-    el.dataset.suffix = suffix;
-    el.textContent = "0" + suffix;
-  });
-
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !entry.target.classList.contains("counted")) {
         entry.target.classList.add("counted");
-        const target = +entry.target.dataset.target;
-        const suffix = entry.target.dataset.suffix;
-        let current = 0;
-        const step = target / 80;
+        const target = +entry.target.dataset.target || parseInt(entry.target.textContent.replace(/\D/g, ""));
+        const suffix = entry.target.textContent.replace(/[0-9,]/g, "");
+        let i = 0;
         const timer = setInterval(() => {
-          current += step;
-          if (current >= target) {
+          i += target / 60;
+          if (i >= target) {
             entry.target.textContent = target.toLocaleString() + suffix;
             clearInterval(timer);
           } else {
-            entry.target.textContent = Math.floor(current).toLocaleString() + suffix;
+            entry.target.textContent = Math.floor(i).toLocaleString() + suffix;
           }
         }, 30);
       }
     });
-  }, { threshold: 0.6 });
+  }, { threshold: 0.7 });
 
-  counters.forEach(c => observer.observe(c));
+  document.querySelectorAll(".stat-number, .fact-number").forEach(el => {
+    const num = parseInt(el.textContent.replace(/\D/g, "")) || 0;
+    const suffix = el.textContent.replace(/[0-9,]/g, "");
+    el.dataset.target = num;
+    el.textContent = "0" + suffix;
+    observer.observe(el);
+  });
 }
 
 function initScrollAnimations() {
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) e.target.classList.add("fade-in-up");
-    });
+    entries.forEach(e => e.isIntersecting && e.target.classList.add("fade-in-up"));
   }, { threshold: 0.1 });
-
-  document.querySelectorAll(".feature-card, .person-card, .letter-card, .timeline-item, .section-header").forEach(el => observer.observe(el));
+  document.querySelectorAll(".feature-card, .person-card, .letter-card, .timeline-item").forEach(el => observer.observe(el));
 }
 
 function initInteractiveElements() {
@@ -220,21 +204,24 @@ function initInteractiveElements() {
 function initParallaxEffects() {
   window.addEventListener("scroll", () => {
     document.querySelectorAll(".parallax").forEach(el => {
-      const speed = el.dataset.speed || 0.5;
-      el.style.transform = `translateY(${scrollY * -speed}px)`;
+      el.style.transform = `translateY(${scrollY * (el.dataset.speed || 0.5) * -1}px)`;
     });
   });
 }
 
 function injectStyles() {
   const css = `
-    .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.7);transform:scale(0);animation:r .6s linear;pointer-events:none}
-    @keyframes r{to{transform:scale(4);opacity:0}}
-    .scroll-progress{position:fixed;top:0;left:0;height:5px;background:#e63946;z-index:9999;width:0%;transition:width .2s}
-    .letter-tooltip{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:#1d3557;color:#fff;padding:8px 14px;border-radius:10px;font-size:0.9rem;opacity:0;transition:opacity .3s;white-space:nowrap;box-shadow:0 5px 15px rgba(0,0,0,0.3)}
+    .scroll-progress{position:fixed;top:0;left:0;height:5px;background:#c1121f;z-index:9999;width:0%;transition:width .3s}
+    .letter-card{cursor:pointer;transition:all .4s cubic-bezier(.2,.8,.2,1)}
+    .letter-card:hover{transform:translateY(-15px) scale(1.15)!important;box-shadow:0 25px 50px rgba(0,0,0,.25)}
+    .letter-card.active{background:#c1121f!important;color:white!important;transform:scale(1.3)!important;box-shadow:0 0 40px #c1121f88!important}
+    .letter-tooltip{
+      position:absolute;bottom:130%;left:50%;transform:translateX(-50%);
+      background:#1d3557;color:white;padding:10px 16px;border-radius:12px;
+      font-size:0.95rem;opacity:0;transition:opacity .3s;pointer-events:none;
+      white-space:nowrap;box-shadow:0 8px 25px rgba(0,0,0,.4);
+    }
     .letter-card:hover .letter-tooltip{opacity:1}
-    .letter-card.active{background:#e63946 !important;color:white !important;transform:scale(1.2) !important;box-shadow:0 15px 40px rgba(230,57,70,0.5)!important}
-    .letter-card{transition:all .3s cubic-bezier(0.4,0,0.2,1)}
   `;
   const style = document.createElement("style");
   style.textContent = css;
@@ -242,6 +229,4 @@ function injectStyles() {
 }
 
 // Service Worker (opsionale)
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js").catch(() => {});
-}
+"serviceWorker" in navigator && navigator.serviceWorker.register("/sw.js").catch(() => {});
