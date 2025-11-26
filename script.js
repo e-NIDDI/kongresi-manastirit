@@ -1,122 +1,26 @@
-// FINAL script.js – REAL ALBANIAN PRONUNCIATION + ALL FEATURES WORKING
-document.addEventListener("DOMContentLoaded", function () {
+// script.js – ALFABETI SHQIP ME ZË TË VËRTETË SHQIPTAR + TË GJITHA FUNKSIONET
+document.addEventListener("DOMContentLoaded", () => {
   initThemeToggle();
   initNavigation();
-  initScrollAnimations();
   initSmoothScrolling();
   initHeaderEffects();
-  initAlphabetGrid();
+  initAlphabetGrid();           // MAGJIA SHQIPTARE
   initPeopleFilter();
-  initTimelineAnimations();
   initNumberCounters();
+  initScrollAnimations();
   initInteractiveElements();
-  initPageTransitions();
   initParallaxEffects();
-  initFloatingLetters();
+  injectStyles();
 });
 
-// ==================== THEME TOGGLE ====================
-function initThemeToggle() {
-  const btn = document.getElementById("themeToggle");
-  if (!btn) return;
-  const saved = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", saved);
-  btn.textContent = saved === "light" ? "Dark Mode" : "Light Mode";
-
-  btn.addEventListener("click", () => {
-    const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-    btn.textContent = next === "light" ? "Dark Mode" : "Light Mode";
-  });
-}
-
-// ==================== NAVIGATION ====================
-function initNavigation() {
-  const hamburger = document.querySelector(".hamburger");
-  const navMenu = document.querySelector(".nav-menu");
-  if (!hamburger || !navMenu) return;
-
-  hamburger.addEventListener("click", () => {
-    hamburger.classList.toggle("active");
-    navMenu.classList.toggle("active");
-    document.body.style.overflow = navMenu.classList.contains("active") ? "hidden" : "";
-  });
-
-  document.querySelectorAll(".nav-link").forEach(l => l.addEventListener("click", () => {
-    hamburger.classList.remove("active");
-    navMenu.classList.remove("active");
-    document.body.style.overflow = "";
-  }));
-
-  document.addEventListener("click", e => {
-    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-      hamburger.classList.remove("active");
-      navMenu.classList.remove("active");
-      document.body.style.overflow = "";
-    }
-  });
-
-  // Scroll spy
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        document.querySelectorAll('.nav-link').forEach(l => {
-          l.classList.remove("active");
-          if (l.getAttribute("href") === `#${entry.target.id}`) l.classList.add("active");
-        });
-      }
-    });
-  }, { rootMargin: "-20% 0px -80% 0px" });
-  document.querySelectorAll("section[id]").forEach(s => observer.observe(s));
-}
-
-// ==================== SMOOTH SCROLLING ====================
-function initSmoothScrolling() {
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener("click", e => {
-      const href = a.getAttribute("href");
-      if (!href || href === "#") return;
-      e.preventDefault();
-      const target = document.querySelector(href);
-      if (target) {
-        const offset = document.querySelector(".navbar")?.offsetHeight || 0;
-        window.scrollTo({ top: target.offsetTop - offset - 20, behavior: "smooth" });
-        history.pushState(null, null, href);
-      }
-    });
-  });
-}
-
-// ==================== HEADER & PROGRESS BAR ====================
-function initHeaderEffects() {
-  const navbar = document.querySelector(".navbar");
-  if (!navbar) return;
-  let lastY = 0;
-
-  window.addEventListener("scroll", () => {
-    const y = window.scrollY;
-    navbar.style.background = y > 100 ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.9)";
-    navbar.style.backdropFilter = y > 100 ? "blur(12px)" : "blur(8px)";
-    navbar.style.transform = y > lastY && y > 200 ? "translateY(-100%)" : "translateY(0)";
-    lastY = y;
-
-    const bar = document.querySelector(".scroll-progress");
-    if (bar) {
-      const percent = (y / (document.documentElement.scrollHeight - innerHeight)) * 100;
-      bar.style.width = percent + "%";
-    }
-  });
-}
-
-// ==================== ALBANIAN ALPHABET – REAL PRONUNCIATION ====================
+// ==================== ALFABETI SHQIP – ZËRI I VËRTETË SHQIPTAR ====================
 function initAlphabetGrid() {
   const grid = document.querySelector(".alphabet-grid");
   if (!grid) return;
 
-  const alphabet = ["A","B","C","Ç","D","Dh","E","Ë","F","G","Gj","H","I","J","K","L","Ll","M","N","Nj","O","P","Q","R","Rr","S","Sh","T","Th","U","V","X","Xh","Y","Z","Zh"];
+  const alfabeti = ["A","B","C","Ç","D","Dh","E","Ë","F","G","Gj","H","I","J","K","L","Ll","M","N","Nj","O","P","Q","R","Rr","S","Sh","T","Th","U","V","X","Xh","Y","Z","Zh"];
 
-  grid.innerHTML = alphabet.map(l => `
+  grid.innerHTML = alfabeti.map(l => `
     <div class="letter-card" data-letter="${l}">
       <span class="letter">${l}</span>
       <div class="letter-tooltip">Shkronja ${l}</div>
@@ -126,62 +30,130 @@ function initAlphabetGrid() {
   document.querySelectorAll(".letter-card").forEach(card => {
     card.addEventListener("click", () => {
       card.classList.toggle("active");
-      speakRealAlbanian(card.dataset.letter);
+      folShqip(card.dataset.letter);
     });
     card.addEventListener("mouseenter", () => {
-      card.style.transform = "translateY(-10px) scale(1.08)";
-      card.style.zIndex = "10";
+      card.style.transform = "translateY(-12px) scale(1.1)";
+      card.style.boxShadow = "0 15px 30px rgba(0,0,0,0.2)";
     });
     card.addEventListener("mouseleave", () => {
       card.style.transform = "";
-      card.style.zIndex = "";
+      card.style.boxShadow = "";
     });
   });
 }
 
-// THIS IS THE MAGIC: REAL ALBANIAN PRONUNCIATION (sounds like a real Albanian!)
-function speakRealAlbanian(letter) {
+// ZËRI 100% SHQIP – SIÇ E THOTË ÇDO SHQIPTAR
+function folShqip(shkronja) {
   if (!("speechSynthesis" in window)) return;
 
-  const sounds = {
-    A: "Aaaa",        B: "Beee",        C: "Tsee",        Ç: "Çeee",
-    D: "Deee",        Dh: "Dhëëë",      E: "Eeee",        Ë: "Ëëëë",
-    F: "Eff",         G: "Geee",        Gj: "Gjëëë",      H: "Haaa",
-    I: "Iiii",        J: "Jot",         K: "Kaaa",        L: "Ell",
-    Ll: "Ëlll",       M: "Emm",         N: "Enn",         Nj: "Njëë",
-    O: "Oooo",        P: "Peee",        Q: "Qeee",        R: "Err",
-    Rr: "Rrrrr",      S: "Ess",         Sh: "Shhh",       T: "Teee",
-    Th: "Thhh",       U: "Uuuu",        V: "Veee",        X: "Xeee",
-    Xh: "Xhjëë",      Y: "Yyyy",        Z: "Zeee",        Zh: "Zhhh"
+  const tingulliShqip = {
+    A: "Aaaa",      B: "Bëëë",      C: "Tsëë",      Ç: "Çëëë",
+    D: "Dëë",       Dh: "Dhëëë",    E: "Eeee",      Ë: "Ëëëë",
+    F: "Ffff",      G: "Gëë",       Gj: "Gjëëë",    H: "Hëë",
+    I: "Iiii",      J: "Jot",       K: "Këë",       L: "Lëë",
+    Ll: "Ëlll",     M: "Mëë",       N: "Nëë",       Nj: "Njëëë",
+    O: "Oooo",      P: "Pëë",       Q: "Qëë",       R: "Rëë",
+    Rr: "Rrrrr",    S: "Ssss",      Sh: "Shhhh",    T: "Tëë",
+    Th: "Thhhh",    U: "Uuuu",      V: "Vëë",       X: "Xëë",
+    Xh: "Xhjëëë",   Y: "Yyyy",      Z: "Zëë",       Zh: "Zhhhh"
   };
 
-  const text = sounds[letter] || letter;
-  const utterance = new SpeechSynthesisUtterance(text);
+  const tekst = tingulliShqip[shkronja] || shkronja;
 
-  // Force Albanian voice if available, otherwise best available
-  utterance.lang = "sq-AL";
-  utterance.rate = 0.75;
+  const utterance = new SpeechSynthesisUtterance(tekst);
+  utterance.lang = "sq-AL";     // Detyron zërin shqiptar
+  utterance.rate = 0.8;
   utterance.pitch = 1.1;
   utterance.volume = 1;
 
-  speechSynthesis.cancel();
+  speechSynthesis.cancel();     // Pastro radhën që të mos ketë vonesë
   speechSynthesis.speak(utterance);
 }
 
-// ==================== PEOPLE FILTER ====================
-function initPeopleFilter() {
-  const btns = document.querySelectorAll(".filter-btn");
-  const cards = document.querySelectorAll(".person-card");
+// ==================== FUNKSIONET E TJERA (të pastruara dhe funksionale) ====================
+function initThemeToggle() {
+  const btn = document.getElementById("themeToggle");
+  if (!btn) return;
+  const theme = localStorage.getItem("theme") || "light";
+  document.documentElement.setAttribute("data-theme", theme);
+  btn.textContent = theme === "light" ? "Dark Mode" : "Light Mode";
 
-  btns.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    btn.textContent = newTheme === "light" ? "Dark Mode" : "Light Mode";
+  });
+}
+
+function initNavigation() {
+  const hamburger = document.querySelector(".hamburger");
+  const nav = document.querySelector(".nav-menu");
+
+  hamburger?.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    nav.classList.toggle("active");
+    document.body.style.overflow = nav.classList.contains("active") ? "hidden" : "";
+  });
+
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", () => {
+      hamburger?.classList.remove("active");
+      nav?.classList.remove("active");
+      document.body.style.overflow = "";
+    });
+  });
+}
+
+function initSmoothScrolling() {
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener("click", e => {
+      const href = a.getAttribute("href");
+      if (!href || href === "#") return;
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target) {
+        const offset = document.querySelector(".navbar")?.offsetHeight || 0;
+        window.scrollTo({
+          top: target.offsetTop - offset - 20,
+          behavior: "smooth"
+        });
+      }
+    });
+  });
+}
+
+function initHeaderEffects() {
+  const navbar = document.querySelector(".navbar");
+  const progress = document.querySelector(".scroll-progress");
+  let lastY = 0;
+
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY;
+    if (navbar) {
+      navbar.style.background = y > 80 ? "rgba(255,255,255,0.96)" : "rgba(255,255,255,0.9)";
+      navbar.style.backdropFilter = "blur(12px)";
+      navbar.style.transform = (y > lastY && y > 150) ? "translateY(-100%)" : "translateY(0)";
+    }
+    if (progress) {
+      const percent = (y / (document.body.scrollHeight - innerHeight)) * 100;
+      progress.style.width = percent + "%";
+    }
+    lastY = y;
+  });
+}
+
+function initPeopleFilter() {
+  document.querySelectorAll(".filter-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      btns.forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
 
       const filter = btn.dataset.filter;
       let visible = 0;
 
-      cards.forEach(card => {
+      document.querySelectorAll(".person-card").forEach(card => {
         const show = filter === "all" || card.dataset.category.split(" ").includes(filter);
         card.style.display = show ? "block" : "none";
         if (show) visible++;
@@ -193,43 +165,6 @@ function initPeopleFilter() {
   });
 }
 
-// ==================== TIMELINE & ANIMATIONS ====================
-function initTimelineAnimations() {
-  document.querySelectorAll(".timeline-item").forEach((item, i) => {
-    item.style.animationDelay = `${i * 0.2}s`;
-    item.addEventListener("click", () => item.querySelector(".timeline-content")?.classList.toggle("expanded"));
-  });
-}
-
-function initScrollAnimations() {
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add("fade-in-up");
-        if (e.target.classList.contains("alphabet-grid")) animateAlphabet();
-        if (e.target.classList.contains("timeline-section")) animateTimeline();
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll(".feature-card, .person-card, .letter-card, .timeline-item, .section-header").forEach(el => observer.observe(el));
-}
-
-function animateAlphabet() {
-  document.querySelectorAll(".letter-card").forEach((c, i) => {
-    c.style.animationDelay = `${i * 0.05}s`;
-    c.classList.add("fade-in-up");
-  });
-}
-
-function animateTimeline() {
-  document.querySelectorAll(".timeline-item").forEach((c, i) => {
-    c.style.animationDelay = `${i * 0.25}s`;
-    c.classList.add("fade-in-up");
-  });
-}
-
-// ==================== WORKING NUMBER COUNTERS ====================
 function initNumberCounters() {
   const counters = document.querySelectorAll(".stat-number, .fact-number");
 
@@ -245,7 +180,19 @@ function initNumberCounters() {
     entries.forEach(entry => {
       if (entry.isIntersecting && !entry.target.classList.contains("counted")) {
         entry.target.classList.add("counted");
-        countUp(entry.target);
+        const target = +entry.target.dataset.target;
+        const suffix = entry.target.dataset.suffix;
+        let current = 0;
+        const step = target / 80;
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            entry.target.textContent = target.toLocaleString() + suffix;
+            clearInterval(timer);
+          } else {
+            entry.target.textContent = Math.floor(current).toLocaleString() + suffix;
+          }
+        }, 30);
       }
     });
   }, { threshold: 0.6 });
@@ -253,41 +200,23 @@ function initNumberCounters() {
   counters.forEach(c => observer.observe(c));
 }
 
-function countUp(el) {
-  const target = +el.dataset.target;
-  const suffix = el.dataset.suffix || "";
-  const duration = 2500;
-  const start = performance.now();
+function initScrollAnimations() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add("fade-in-up");
+    });
+  }, { threshold: 0.1 });
 
-  function step(now) {
-    const progress = Math.min((now - start) / duration, 1);
-    const value = Math.floor(progress * target);
-    el.textContent = value.toLocaleString() + suffix;
-    if (progress < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+  document.querySelectorAll(".feature-card, .person-card, .letter-card, .timeline-item, .section-header").forEach(el => observer.observe(el));
 }
 
-// ==================== INTERACTIONS & EFFECTS ====================
 function initInteractiveElements() {
   document.querySelectorAll(".cta-button").forEach(btn => {
-    btn.addEventListener("mouseenter", () => btn.style.transform = "translateY(-4px)");
+    btn.addEventListener("mouseenter", () => btn.style.transform = "translateY(-6px)");
     btn.addEventListener("mouseleave", () => btn.style.transform = "");
-    btn.addEventListener("click", e => {
-      const ripple = document.createElement("span");
-      const rect = btn.getBoundingClientRect();
-      const size = Math.max(rect.width, rect.height) * 2;
-      ripple.style.width = ripple.style.height = size + "px";
-      ripple.style.left = e.clientX - rect.left - size/2 + "px";
-      ripple.style.top = e.clientY - rect.top - size/2 + "px";
-      ripple.classList.add("ripple");
-      btn.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 600);
-    });
   });
 }
 
-// ==================== PARALLAX & FLOATING ====================
 function initParallaxEffects() {
   window.addEventListener("scroll", () => {
     document.querySelectorAll(".parallax").forEach(el => {
@@ -297,38 +226,22 @@ function initParallaxEffects() {
   });
 }
 
-function initFloatingLetters() {
-  document.querySelectorAll(".floating-letter").forEach((l, i) => {
-    const dur = 5 + Math.random() * 5;
-    l.style.animation = `float ${dur}s ease-in-out infinite`;
-  });
+function injectStyles() {
+  const css = `
+    .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.7);transform:scale(0);animation:r .6s linear;pointer-events:none}
+    @keyframes r{to{transform:scale(4);opacity:0}}
+    .scroll-progress{position:fixed;top:0;left:0;height:5px;background:#e63946;z-index:9999;width:0%;transition:width .2s}
+    .letter-tooltip{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:#1d3557;color:#fff;padding:8px 14px;border-radius:10px;font-size:0.9rem;opacity:0;transition:opacity .3s;white-space:nowrap;box-shadow:0 5px 15px rgba(0,0,0,0.3)}
+    .letter-card:hover .letter-tooltip{opacity:1}
+    .letter-card.active{background:#e63946 !important;color:white !important;transform:scale(1.2) !important;box-shadow:0 15px 40px rgba(230,57,70,0.5)!important}
+    .letter-card{transition:all .3s cubic-bezier(0.4,0,0.2,1)}
+  `;
+  const style = document.createElement("style");
+  style.textContent = css;
+  document.head.appendChild(style);
 }
 
-// ==================== PAGE LOAD ====================
-function initPageTransitions() {
-  document.body.classList.add("loading");
-  window.addEventListener("load", () => {
-    setTimeout(() => {
-      document.body.classList.remove("loading");
-      document.body.classList.add("loaded");
-    }, 150);
-  });
-}
-
-// ==================== EXTRA CSS ====================
-const css = `
-  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.7);transform:scale(0);animation:ripple .6s linear;pointer-events:none}
-  @keyframes ripple{to{transform:scale(4);opacity:0}}
-  .scroll-progress{position:fixed;top:0;left:0;height:4px;background:var(--primary-color);z-index:1001;width:0%;transition:width .2s}
-  .letter-tooltip{position:absolute;bottom:120%;left:50%;transform:translateX(-50%);background:#1a1a1a;color:white;padding:6px 12px;border-radius:8px;font-size:0.85rem;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
-  .letter-card:hover .letter-tooltip{opacity:1}
-  .letter-card.active{background:var(--primary-color);color:white;transform:scale(1.15)!important}
-`;
-const style = document.createElement("style");
-style.textContent = css;
-document.head.appendChild(style);
-
-// Service Worker
+// Service Worker (opsionale)
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/sw.js").catch(() => {});
 }
