@@ -4,20 +4,48 @@ document.addEventListener("DOMContentLoaded", () => {
     initSmoothScrolling();
     initHeaderEffects();
     initAlphabetGrid();
-    initPeopleFilter();   // FILTRIM PJESËMARRËSISH
+    initPeopleFilter();
+    initNumberCounters();   // KJO FIKS NUMRAT – ATA RRITEN AUTOMATIKISHT
     initBackToTop();
 });
+
+/* ====================== NUMRAT QË RRITEN (për stats-section) ====================== */
+function initNumberCounters() {
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains("counted")) {
+                entry.target.classList.add("counted");
+                const target = parseInt(entry.target.dataset.count, 10) || 0;
+                let current = 0;
+                const increment = target / 50;  // Shpejtësia e animacionit
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        entry.target.textContent = target.toLocaleString();
+                        clearInterval(timer);
+                    } else {
+                        entry.target.textContent = Math.floor(current).toLocaleString();
+                    }
+                }, 40);  // Koha midis update-ve
+            }
+        });
+    }, { threshold: 0.6 });
+
+    document.querySelectorAll(".stat-number").forEach(el => {
+        observer.observe(el);
+    });
+}
 
 /* ====================== FILTRIM PJESËMARRËSISH ====================== */
 function initPeopleFilter() {
     const buttons = document.querySelectorAll(".filter-btn");
     const cards   = document.querySelectorAll(".person-card");
 
-    if (buttons.length === 0) return; // dalim nëse nuk jemi në faqen pjesëmarrësit
+    if (buttons.length === 0) return;
 
     buttons.forEach(button => {
         button.addEventListener("click", () => {
-            // Hiq active nga të gjithë
             buttons.forEach(b => b.classList.remove("active"));
             button.classList.add("active");
 
@@ -34,11 +62,10 @@ function initPeopleFilter() {
         });
     });
 
-    // Nis me "Të Gjithë" aktiv
     document.querySelector('.filter-btn[data-filter="all"]')?.click();
 }
 
-/* ====================== MODAL ALFABETI (sipër shkronjës + pa problem scroll) ====================== */
+/* ====================== MODAL ALFABETI ====================== */
 function initAlphabetGrid() {
     const grid = document.querySelector(".alphabet-grid");
     if (!grid) return;
