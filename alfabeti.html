@@ -1,139 +1,184 @@
 <!doctype html>
 <html lang="sq">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfabeti - Kongresi i Manastirit</title>
-    <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <h2>Kongresi i Manastirit</h2>
-                <span>14-22 Nëntor 1908</span>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Alfabeti - Kongresi i Manastirit</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h2>Kongresi i Manastirit</h2>
+                    <span>14-22 Nëntor 1908</span>
+                </div>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">Kryefaqja</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="rreth.html" class="nav-link"
+                            >Rreth Kongresit</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a href="historiku.html" class="nav-link">Historiku</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="pjesemarresit.html" class="nav-link"
+                            >Pjesëmarrësit</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a href="alfabeti.html" class="nav-link active"
+                            >Alfabeti</a
+                        >
+                    </li>
+                    <li class="nav-item">
+                        <a href="trashigimi.html" class="nav-link"
+                            >Trashëgimia</a
+                        >
+                    </li>
+                </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
             </div>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Kryefaqja</a></li>
-                <li><a href="rreth.html" class="nav-link">Rreth Kongresit</a></li>
-                <li><a href="historiku.html" class="nav-link">Historiku</a></li>
-                <li><a href="pjesemarresit.html" class="nav-link">Pjesëmarrësit</a></li>
-                <li><a href="alfabeti.html" class="nav-link active">Alfabeti</a></li>
-                <li><a href="trashigimi.html" class="nav-link">Trashëgimia</a></li>
-            </ul>
-            <div class="hamburger">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </div>
-        </div>
-    </nav>
-
-    <!-- HEADER -->
-    <header class="page-header">
-        <div class="container">
-            <h1>Alfabeti Shqip</h1>
-            <p>36 shkronjat që formuan identitetin e gjuhës sonë</p>
-        </div>
-    </header>
-
-    <main>
-        <section class="alphabet-section">
+        </nav>
+        <header class="page-header">
             <div class="container">
-                <div class="alphabet-intro">
-                    <h2>Alfabeti i Vendosur në Manastir</h2>
-                    <p>
-                        Kongresi i Manastirit vendosi përdorimin e alfabetit latin për gjuhën shqipe,
-                        me 36 shkronja që përfaqësojnë të gjitha tingujt e gjuhës shqipe.
-                    </p>
-                </div>
-
-                <!-- GRID-I I SHKRONJAVE -->
-                <div class="alphabet-grid">
-                    <!-- JavaScript-i do t'i shtojë shkronjat këtu -->
-                </div>
-
-                <div class="alphabet-details">
-                    <h3>Karakteristikat e Alfabetit</h3>
-                    <div class="details-grid">
-                        <div class="detail-card">
-                            <h4>Shkronjat e Reja</h4>
-                            <p>U krijuan shkronja të reja si "ë", "ç", "dh", "gj", "ll", "nj", "rr", "sh", "th", "xh", "zh".</p>
-                        </div>
-                        <div class="detail-card">
-                            <h4>Baza Latine</h4>
-                            <p>Alfabeti bazohet në alfabetin latin me modifikime për gjuhën shqipe.</p>
-                        </div>
-                        <div class="detail-card">
-                            <h4>Fonetik</h4>
-                            <p>Sistemi është kryesisht fonetik – çdo shkronjë përfaqëson një tingull.</p>
+                <h1>Alfabeti Shqip</h1>
+                <p>36 shkronjat që formuan identitetin e gjuhës sonë</p>
+            </div>
+        </header>
+        <main>
+            <section class="alphabet-section">
+                <div class="container">
+                    <div class="alphabet-intro">
+                        <h2>Alfabeti i Vendosur në Manastir</h2>
+                        <p>
+                            Kongresi i Manastirit vendosi përdorimin e alfabetit
+                            latin për gjuhën shqipe, me 36 shkronja që
+                            përfaqësojnë të gjitha tingujt e gjuhës shqipe.
+                        </p>
+                    </div>
+                    <div class="alphabet-grid">
+                        <!-- Shkronjat do të gjenerohen me JavaScript -->
+                    </div>
+                    <div id="letterModal" class="letter-modal">
+                      <div class="modal-content">
+                        <span class="close">×</span>
+                        <div class="modal-letter"></div>
+                        <h2 class="modal-name"></h2>
+                        <p class="modal-pronounce"></p>
+                        <p class="modal-examples"></p>
+                      </div>
+                    </div>
+                    <div class="alphabet-details">
+                        <h3>Karakteristikat e Alfabetit</h3>
+                        <div class="details-grid">
+                            <div class="detail-card">
+                                <h4>Shkronjat e Reja</h4>
+                                <p>
+                                    U krijuan shkronja të reja si "ë", "ç",
+                                    "dh", "gj", "ll", "nj", "rr", "sh", "th",
+                                    "xh", "zh" për të përfaqësuar tinguj
+                                    specifikë shqip.
+                                </p>
+                            </div>
+                            <div class="detail-card">
+                                <h4>Baza Latine</h4>
+                                <p>
+                                    Alfabeti bazohet në alfabetin latin me
+                                    modifikime për të përshtatur nevojat e
+                                    gjuhës shqipe.
+                                </p>
+                            </div>
+                            <div class="detail-card">
+                                <h4>Fonetik</h4>
+                                <p>
+                                    Sistemi është kryesisht fonetik - çdo
+                                    shkronjë përfaqëson një tingull specifik.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <!-- KRAHASIMI -->
-        <section class="comparison-section">
+            </section>
+            <section class="comparison-section">
+                <div class="container">
+                    <h2>Krahasimi me Sistemet e Mëparshme</h2>
+                    <div class="comparison-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Sistemi</th>
+                                    <th>Përshkrimi</th>
+                                    <th>Përdorimi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Alfabeti Latin (Bashkimi)</td>
+                                    <td>
+                                        Sistemi i propozuar nga shoqëria
+                                        "Bashkimi"
+                                    </td>
+                                    <td>Përdorej kryesisht në veri</td>
+                                </tr>
+                                <tr>
+                                    <td>Alfabeti Grek</td>
+                                    <td>Përshtatur për shqipen</td>
+                                    <td>Përdorej në jug nga ortodoksët</td>
+                                </tr>
+                                <tr>
+                                    <td>Alfabeti Arab</td>
+                                    <td>Përshtatur për shqipen</td>
+                                    <td>Përdorej nga myslimanët</td>
+                                </tr>
+                                <tr>
+                                    <td>Alfabeti i Manastirit</td>
+                                    <td>Alfabeti i njësuar</td>
+                                    <td>Përdorim universal</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
             <div class="container">
-                <h2>Krahasimi me Sistemet e Mëparshme</h2>
-                <div class="comparison-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Sistemi</th>
-                                <th>Përshkrimi</th>
-                                <th>Përdorimi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>Alfabeti Latin (Bashkimi)</td><td>Sistemi i propozuar nga shoqëria "Bashkimi"</td><td>Përdorej kryesisht në veri</td></tr>
-                            <tr><td>Alfabeti Grek</td><td>Përshtatur për shqipen</td><td>Përdorej në jug nga ortodoksët</td></tr>
-                            <tr><td>Alfabeti Arab</td><td>Përshtatur për shqipen</td><td>Përdorej nga myslimanët</td></tr>
-                            <tr><td>Alfabeti i Manastirit</td><td>Alfabeti i njësuar</td><td>Përdorim universal</td></tr>
-                        </tbody>
-                    </table>
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h4>Kongresi i Manastirit</h4>
+                        <p>
+                            Një projekt për të kremtuar trashëgiminë kulturore
+                            shqiptare
+                        </p>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Shpejtësi</h4>
+                        <ul>
+                            <li><a href="index.html">Kryefaqja</a></li>
+                            <li><a href="alfabeti.html">Alfabeti</a></li>
+                            <li>
+                                <a href="pjesemarresit.html">Personalitetet</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    <p>
+                        &copy; 2024 Kongresi i Manastirit. Të gjitha të drejtat
+                        e rezervuara.
+                    </p>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>Kongresi i Manastirit</h4>
-                    <p>Një projekt për të kremtuar trashëgiminë kulturore shqiptare</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Shpejtësi</h4>
-                    <ul>
-                        <li><a href="index.html">Kryefaqja</a></li>
-                        <li><a href="alfabeti.html">Alfabeti</a></li>
-                        <li><a href="pjesemarresit.html">Personalitetet</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Kongresi i Manastirit. Të gjitha të drejtat e rezervuara.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- MODALI I SHKRONJËS (pozicionohet automatikisht sipër shkronjës) -->
-    <div id="letterModal" class="letter-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-        <div class="modal-content">
-            <span class="close" aria-label="Mbyll">×</span>
-            <div class="modal-letter"></div>
-            <h2 id="modal-title" class="modal-name"></h2>
-            <p class="modal-pronounce"></p>
-            <p class="modal-examples"></p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
+        </footer>
+        <script src="script.js"></script>
+    </body>
 </html>
