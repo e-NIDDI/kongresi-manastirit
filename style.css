@@ -1813,7 +1813,7 @@ tr:last-child {
         flex-direction: column;
     }
     .letter-modal .modal-content {
-        z-index:150;
+        z-index:990;
         width: 95%;
         padding: 1.5rem;
     }
