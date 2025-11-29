@@ -1010,6 +1010,7 @@ section {
 }
 .letter-card {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    z-index: 500;
     color: var(--white);
     aspect-ratio: 1;
     display: flex;
