@@ -3,11 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
     initSmoothScrolling();
     initHeaderEffects();
-    initAlphabetGrid();        // MODALI I RI – POZICIONOhet SIPËR SHKRONJËS
+    initAlphabetGrid();     // MODALI I RI – FIKSOHET PËRFUNDIMISHT
     initBackToTop();
 });
 
-/* ====================== ALFABETI – MODAL SIPËR SHKRONJËS ====================== */
+/* ====================== ALFABETI – MODAL SIPËR SHKRONJËS (PA PROBLEME) ====================== */
 function initAlphabetGrid() {
     const grid = document.querySelector(".alphabet-grid");
     if (!grid) return;
@@ -55,7 +55,7 @@ function initAlphabetGrid() {
 
     // Krijo kartat
     grid.innerHTML = alfabeti.map(l => `
-        <div class="letter-card" data-letter="${l}" tabindex="0">
+        <div class="letter-card" data-letter="${l}" tabindex="0" role="button" aria-label="Shiko shkronjën ${l}">
             <span class="letter">${l}</span>
             <div class="letter-tooltip">Kliko për të mësuar</div>
         </div>
@@ -69,7 +69,7 @@ function initAlphabetGrid() {
     const modalExamples = modal.querySelector(".modal-examples");
     const closeBtn = modal.querySelector(".close");
 
-    // FUNKSIONI KRYESOR – POZICIONON MODALIN SIPËR SHKRONJËS
+    // HAP MODALIN SIPËR SHKRONJËS
     function openModal(card) {
         const letter = card.dataset.letter;
         const data = info[letter];
@@ -79,45 +79,59 @@ function initAlphabetGrid() {
         modalPronounce.textContent = `Shqiptohet: ${data.shqiptim}`;
         modalExamples.textContent = `Shembuj: ${data.shembuj}`;
 
-        // Pozicionimi sipër shkronjës
+        // Llogarit pozicionin e saktë sipër shkronjës
         const rect = card.getBoundingClientRect();
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const top = rect.top + scrollTop + rect.height / 2;
+        const cardCenterY = rect.top + scrollTop + rect.height / 2;
 
+        // Vendos modalin pikërisht aty
         modalContent.style.position = "absolute";
-        modalContent.style.top = `${top}px`;
+        modalContent.style.top = `${cardCenterY}px`;
         modalContent.style.left = "50%";
         modalContent.style.transform = "translateX(-50%) translateY(-50%)";
         modalContent.style.margin = "0";
+        modalContent.style.zIndex = "10001";
 
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
     }
 
-    // Event listeners për çdo kartë
-    document.querySelectorAll(".letter-card").forEach(card => {
-        card.addEventListener("click", () => openModal(card));
-        card.addEventListener("keydown", e => (e.key === "Enter" || e.key === " ") && openModal(card));
-    });
-
-    // Mbyll modalin
+    // MBYLL MODALIN DHE RIKTHE STILET ORIGJINALE
     function closeModal() {
         modal.classList.remove("show");
         document.body.style.overflow = "";
-        // Rikthe pozicionin default kur mbyllet
+
+        // KY ËSHTË RREGULLIMI KYÇ – rikthejmë të gjitha stilet siç ishin në CSS
         modalContent.style.position = "";
         modalContent.style.top = "";
         modalContent.style.left = "";
         modalContent.style.transform = "";
         modalContent.style.margin = "";
+        modalContent.style.zIndex = "";
     }
 
+    // Eventet për hapje
+    document.querySelectorAll(".letter-card").forEach(card => {
+        card.addEventListener("click", () => openModal(card));
+        card.addEventListener("keydown", e => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openModal(card);
+            }
+        });
+    });
+
+    // Eventet për mbyllje
     closeBtn.onclick = closeModal;
-    modal.addEventListener("click", e => e.target === modal && closeModal());
-    document.addEventListener("keydown", e => e.key === "Escape" && modal.classList.contains("show") && closeModal());
+    modal.addEventListener("click", e => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener("keydown", e => {
+        if (e.key === "Escape" && modal.classList.contains("show")) closeModal();
+    });
 }
 
-/* ====================== FUNKSIONET E TJERA (të njëjta si më parë) ====================== */
+/* ====================== FUNKSIONET E TJERA (të paprekura) ====================== */
 function initThemeToggle() {
     const btn = document.getElementById("themeToggle");
     if (!btn) return;
@@ -160,7 +174,6 @@ function initSmoothScrolling() {
 
 function initHeaderEffects() {
     const navbar = document.querySelector(".navbar");
-    const progress = document.querySelector(".scroll-progress");
     let lastY = 0;
     window.addEventListener("scroll", () => {
         const y = window.scrollY;
@@ -168,7 +181,6 @@ function initHeaderEffects() {
             navbar.style.background = y > 80 ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)";
             navbar.style.transform = y > lastY && y > 150 ? "translateY(-100%)" : "translateY(0)";
         }
-        if (progress) progress.style.width = (y / (document.body.scrollHeight - innerHeight)) * 100 + "%";
         lastY = y;
     });
 }
