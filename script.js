@@ -118,6 +118,7 @@ function initAlphabetGrid() {
         modalContent.style.transform = "translateX(-50%) translateY(-50%)";
         modalContent.style.margin = "0";
 
+        modal.style.display = "flex";
         modal.classList.add("show");
         document.body.style.overflow = "hidden";
     }
@@ -125,6 +126,7 @@ function initAlphabetGrid() {
     function closeModal() {
         modal.classList.remove("show");
         document.body.style.overflow = "";
+        modal.style.display = "none";
 
         modalContent.style.position = "";
         modalContent.style.top = "";
