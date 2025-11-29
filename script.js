@@ -3,91 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
     initNavigation();
     initSmoothScrolling();
     initHeaderEffects();
-    initAlphabetGrid();        // MODALI I RI DHE I BUKUR
-    initPeopleFilter();
-    initNumberCounters();
-    initScrollAnimations();
-    initInteractiveElements();
-    initParallaxEffects();
+    initAlphabetGrid();        // MODALI I RI – POZICIONOhet SIPËR SHKRONJËS
     initBackToTop();
 });
 
-/* ==================== TEMA (LIGHT / DARK) ==================== */
-function initThemeToggle() {
-    const btn = document.getElementById("themeToggle");
-    if (!btn) return;
-
-    const savedTheme = localStorage.getItem("theme") || "light";
-    document.documentElement.setAttribute("data-theme", savedTheme);
-    btn.innerHTML = savedTheme === "light" ? "Dark Mode" : "Light Mode";
-
-    btn.addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme");
-        const newTheme = current === "light" ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        btn.innerHTML = newTheme === "light" ? "Dark Mode" : "Light Mode";
-    });
-}
-
-/* ==================== NAVIGIMI (HAMBURGER + LINKS) ==================== */
-function initNavigation() {
-    const hamburger = document.querySelector(".hamburger");
-    const nav = document.querySelector(".nav-menu");
-
-    hamburger?.addEventListener("click", () => {
-        hamburger.classList.toggle("active");
-        nav.classList.toggle("active");
-        document.body.style.overflow = nav.classList.contains("active") ? "hidden" : "";
-    });
-
-    document.querySelectorAll(".nav-link").forEach(link => {
-        link.addEventListener("click", () => {
-            hamburger?.classList.remove("active");
-            nav?.classList.remove("active");
-            document.body.style.overflow = "";
-        });
-    });
-}
-
-/* ==================== SMOOTH SCROLLING ==================== */
-function initSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", e => {
-            const target = anchor.getAttribute("href");
-            if (target === "#" || !document.querySelector(target)) return;
-            e.preventDefault();
-            document.querySelector(target).scrollIntoView({ behavior: "smooth" });
-        });
-    });
-}
-
-/* ==================== HEADER & SCROLL PROGRESS ==================== */
-function initHeaderEffects() {
-    const navbar = document.querySelector(".navbar");
-    const progress = document.querySelector(".scroll-progress");
-    let lastY = 0;
-
-    window.addEventListener("scroll", () => {
-        const y = window.scrollY;
-
-        // Navbar blur + hide on scroll down
-        if (navbar) {
-            navbar.style.background = y > 80 ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)";
-            navbar.style.transform = (y > lastY && y > 150) ? "translateY(-100%)" : "translateY(0)";
-        }
-
-        // Scroll progress bar
-        if (progress) {
-            const percent = (y / (document.body.scrollHeight - innerHeight)) * 100;
-            progress.style.width = percent + "%";
-        }
-
-        lastY = y;
-    });
-}
-
-/* ==================== ALFABETI SHQIP – MODAL I RI DHE I BUKUR ==================== */
+/* ====================== ALFABETI – MODAL SIPËR SHKRONJËS ====================== */
 function initAlphabetGrid() {
     const grid = document.querySelector(".alphabet-grid");
     if (!grid) return;
@@ -134,157 +54,128 @@ function initAlphabetGrid() {
     };
 
     // Krijo kartat
-    grid.innerHTML = alfabeti.map(letter => `
-        <div class="letter-card" data-letter="${letter}" tabindex="0" role="button" aria-label="Shiko informacion për shkronjën ${letter}">
-            <span class="letter">${letter}</span>
+    grid.innerHTML = alfabeti.map(l => `
+        <div class="letter-card" data-letter="${l}" tabindex="0">
+            <span class="letter">${l}</span>
             <div class="letter-tooltip">Kliko për të mësuar</div>
         </div>
     `).join("");
 
-    // Krijo modalin një herë
-    const modalHTML = `
-        <div id="letterModal" class="letter-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <div class="modal-content">
-                <span class="close" aria-label="Mbyll modalin">×</span>
-                <div class="modal-letter" aria-hidden="true"></div>
-                <h2 id="modal-title" class="modal-name"></h2>
-                <p class="modal-pronounce"></p>
-                <p class="modal-examples"></p>
-            </div>
-        </div>
-    `;
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-
     const modal = document.getElementById("letterModal");
+    const modalContent = modal.querySelector(".modal-content");
     const modalLetter = modal.querySelector(".modal-letter");
     const modalName = modal.querySelector(".modal-name");
     const modalPronounce = modal.querySelector(".modal-pronounce");
     const modalExamples = modal.querySelector(".modal-examples");
     const closeBtn = modal.querySelector(".close");
 
-    // Hap modalin
+    // FUNKSIONI KRYESOR – POZICIONON MODALIN SIPËR SHKRONJËS
+    function openModal(card) {
+        const letter = card.dataset.letter;
+        const data = info[letter];
+
+        modalLetter.textContent = letter;
+        modalName.textContent = `Shkronja ${data.emri}`;
+        modalPronounce.textContent = `Shqiptohet: ${data.shqiptim}`;
+        modalExamples.textContent = `Shembuj: ${data.shembuj}`;
+
+        // Pozicionimi sipër shkronjës
+        const rect = card.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const top = rect.top + scrollTop + rect.height / 2;
+
+        modalContent.style.position = "absolute";
+        modalContent.style.top = `${top}px`;
+        modalContent.style.left = "50%";
+        modalContent.style.transform = "translateX(-50%) translateY(-50%)";
+        modalContent.style.margin = "0";
+
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+    }
+
+    // Event listeners për çdo kartë
     document.querySelectorAll(".letter-card").forEach(card => {
-        const openModal = () => {
-            const l = card.dataset.letter;
-            const data = info[l];
-            modalLetter.textContent = l;
-            modalName.textContent = `Shkronja ${data.emri}`;
-            modalPronounce.textContent = `Shqiptohet: ${data.shqiptim}`;
-            modalExamples.textContent = `Shembuj: ${data.shembuj}`;
-
-            modal.classList.add("show");
-            document.body.style.overflow = "hidden";
-        };
-
-        card.addEventListener("click", openModal);
-        card.addEventListener("keydown", e => (e.key === "Enter" || e.key === " ") && openModal());
+        card.addEventListener("click", () => openModal(card));
+        card.addEventListener("keydown", e => (e.key === "Enter" || e.key === " ") && openModal(card));
     });
 
     // Mbyll modalin
-    const closeModal = () => {
+    function closeModal() {
         modal.classList.remove("show");
         document.body.style.overflow = "";
-    };
+        // Rikthe pozicionin default kur mbyllet
+        modalContent.style.position = "";
+        modalContent.style.top = "";
+        modalContent.style.left = "";
+        modalContent.style.transform = "";
+        modalContent.style.margin = "";
+    }
 
-    closeBtn.addEventListener("click", closeModal);
+    closeBtn.onclick = closeModal;
     modal.addEventListener("click", e => e.target === modal && closeModal());
     document.addEventListener("keydown", e => e.key === "Escape" && modal.classList.contains("show") && closeModal());
 }
 
-/* ==================== FILTRIM I PERSONAVE ==================== */
-function initPeopleFilter() {
-    const buttons = document.querySelectorAll(".filter-btn");
-    const cards = document.querySelectorAll(".person-card");
+/* ====================== FUNKSIONET E TJERA (të njëjta si më parë) ====================== */
+function initThemeToggle() {
+    const btn = document.getElementById("themeToggle");
+    if (!btn) return;
+    const saved = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", saved);
+    btn.innerHTML = saved === "light" ? "Dark Mode" : "Light Mode";
+    btn.addEventListener("click", () => {
+        const newTheme = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        btn.innerHTML = newTheme === "light" ? "Dark Mode" : "Light Mode";
+    });
+}
 
-    buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-            buttons.forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
+function initNavigation() {
+    const hamburger = document.querySelector(".hamburger");
+    const nav = document.querySelector(".nav-menu");
+    hamburger?.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        nav.classList.toggle("active");
+        document.body.style.overflow = nav.classList.contains("active") ? "hidden" : "";
+    });
+    document.querySelectorAll(".nav-link").forEach(l => l.addEventListener("click", () => {
+        hamburger?.classList.remove("active");
+        nav?.classList.remove("active");
+        document.body.style.overflow = "";
+    }));
+}
 
-            const filter = btn.dataset.filter || "all";
-            cards.forEach(card => {
-                if (filter === "all" || card.dataset.role === filter) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
-                }
-            });
+function initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener("click", e => {
+            const h = a.getAttribute("href");
+            if (h === "#" || !document.querySelector(h)) return;
+            e.preventDefault();
+            document.querySelector(h).scrollIntoView({ behavior: "smooth" });
         });
     });
 }
 
-/* ==================== NUMRAT QË RRITEN ==================== */
-function initNumberCounters() {
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.classList.contains("counted")) {
-                entry.target.classList.add("counted");
-                const target = parseInt(entry.target.dataset.target || entry.target.textContent.replace(/\D/g, ""), 10);
-                const suffix = entry.target.textContent.replace(/[0-9,]/g, "");
-                let current = 0;
-                const increment = target / 80;
-
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        entry.target.textContent = target.toLocaleString() + suffix;
-                        clearInterval(timer);
-                    } else {
-                        entry.target.textContent = Math.floor(current).toLocaleString() + suffix;
-                    }
-                }, 30);
-            }
-        });
-    }, { threshold: 0.7 });
-
-    document.querySelectorAll(".stat-number, .fact-number").forEach(el => {
-        const num = parseInt(el.textContent.replace(/\D/g, ""), 10) || 0;
-        const suffix = el.textContent.replace(/[0-9,]/g, "");
-        el.dataset.target = num;
-        el.textContent = "0" + suffix;
-        observer.observe(el);
-    });
-}
-
-/* ==================== ANIMACIONET NË SCROLL ==================== */
-function initScrollAnimations() {
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add("fade-in-up");
-        });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll(".feature-card, .person-card, .letter-card, .timeline-item, .legacy-card, .fact-card").forEach(el => observer.observe(el));
-}
-
-/* ==================== ELEMENTE INTERAKTIVE ==================== */
-function initInteractiveElements() {
-    document.querySelectorAll(".cta-button").forEach(btn => {
-        btn.addEventListener("mouseenter", () => btn.style.transform = "translateY(-6px)");
-        btn.addEventListener("mouseleave", () => btn.style.transform = "");
-    });
-}
-
-/* ==================== PARALLAX (nëse ke .parallax klasa) ==================== */
-function initParallaxEffects() {
+function initHeaderEffects() {
+    const navbar = document.querySelector(".navbar");
+    const progress = document.querySelector(".scroll-progress");
+    let lastY = 0;
     window.addEventListener("scroll", () => {
-        document.querySelectorAll(".parallax").forEach(el => {
-            const speed = el.dataset.speed || 0.5;
-            el.style.transform = `translateY(${scrollY * speed * -1}px)`;
-        });
+        const y = window.scrollY;
+        if (navbar) {
+            navbar.style.background = y > 80 ? "rgba(255,255,255,0.98)" : "rgba(255,255,255,0.95)";
+            navbar.style.transform = y > lastY && y > 150 ? "translateY(-100%)" : "translateY(0)";
+        }
+        if (progress) progress.style.width = (y / (document.body.scrollHeight - innerHeight)) * 100 + "%";
+        lastY = y;
     });
 }
 
-/* ==================== BACK TO TOP ==================== */
 function initBackToTop() {
     const btn = document.querySelector(".back-to-top");
     if (!btn) return;
-
-    window.addEventListener("scroll", () => {
-        btn.classList.toggle("visible", window.scrollY > 500);
-    });
-
-    btn.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    window.addEventListener("scroll", () => btn.classList.toggle("visible", window.scrollY > 500));
+    btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 }
